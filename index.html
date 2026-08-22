@@ -1315,8 +1315,9 @@
             }
         }
 
+        /* ===== RELATED SECTION - NOW USING SAME CARD STYLE AS HOME ===== */
         .related-section {
-            padding: 10px;
+            padding: 8px 15px; /* match home side margin */
             background: white;
             border-top: 1px solid #e9edf4;
         }
@@ -1332,95 +1333,13 @@
         .related-grid {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 12px; /* match home card gap */
         }
-        .related-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 8px;
-            background: #f8fafc;
-            border-radius: 10px;
-            border: 1px solid #e9edf4;
-            cursor: pointer;
-        }
-        .related-item:active {
-            transform: scale(0.97);
-        }
-        .related-item img {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            object-fit: cover;
-            display: block;
-        }
-        .related-item .rinfo {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0px;
-        }
-        .related-item .rname {
-            font-weight: 600;
-            font-size: 0.6rem;
-            color: #0b1e33;
-        }
-        .related-item .rname .alt {
-            font-weight: 400;
-            font-size: 0.45rem;
-            color: #6b7280;
-        }
-        .related-item .rbonus {
-            font-size: 0.45rem;
-            color: #2563eb;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-        }
-        .related-item .rwithdraw {
-            font-size: 0.4rem;
-            color: #0a0a0a;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-        }
-        .related-item .rdownload {
-            background: #0b1e33;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.45rem;
-            white-space: nowrap;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        .related-item .rdownload:active {
-            transform: scale(0.95);
-        }
-        .related-item .rdownload .dl-icon-cyan {
-            width: 16px;
-            height: 16px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .related-item .rdownload .dl-icon-cyan svg {
-            width: 100%;
-            height: 100%;
-            fill: none;
-            stroke: #22d3ee;
-            stroke-width: 2.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.5));
+
+        /* ---- Reuse .card styles for related items ---- */
+        .related-grid .card {
+            /* .card styles already defined below, but we need to ensure they apply */
+            /* The .card class is already defined for home grid, we reuse it */
         }
 
         /* ===== MAIN GRID — FIXED MOBILE CARD LAYOUT ===== */
@@ -2096,6 +2015,12 @@
                 padding: 8px 12px;
                 gap: 10px;
             }
+            .related-section {
+                padding: 8px 12px;
+            }
+            .related-grid {
+                gap: 10px;
+            }
             .marquee-container marquee {
                 font-size: 0.5rem;
             }
@@ -2121,9 +2046,6 @@
             .game-tag .tag-loader {
                 width: 14px;
                 height: 14px;
-            }
-            .related-item .rname {
-                font-size: 0.5rem;
             }
             .footer-links a {
                 font-size: 0.45rem;
@@ -2168,14 +2090,6 @@
             .download-btn .btn-icon {
                 width: 20px;
                 height: 20px;
-            }
-            .related-item .rdownload {
-                font-size: 0.4rem;
-                padding: 3px 8px;
-            }
-            .related-item .rdownload .dl-icon-cyan {
-                width: 14px;
-                height: 14px;
             }
             .overlay-page-wrapper .overlay-content {
                 padding: 16px 12px;
@@ -2520,6 +2434,7 @@
                 <div class="game-tags-container" id="gameTagsContainer"></div>
             </div>
 
+            <!-- RELATED SECTION - NOW USING SAME CARD STYLE AS HOME -->
             <div class="related-section">
                 <div class="related-title">
                     <span class="lucide-icon glow-purple">
@@ -2982,43 +2897,47 @@
                     tagsContainer.appendChild(tag);
                 });
 
+                // --- RENDER RELATED GAMES USING SAME CARD STYLE ---
                 const relatedGrid = document.getElementById('relatedGrid');
                 relatedGrid.innerHTML = '';
-                uniqueGames.filter(g => g.name !== game.name).forEach(g => {
-                    const item = document.createElement('div');
-                    item.className = 'related-item';
-                    item.dataset.name = g.name;
-                    item.dataset.altName = g.altName || g.name;
-                    item.dataset.bonus = g.bonus;
-                    item.dataset.withdrawal = g.withdrawal;
-                    item.dataset.downloadUrl = g.downloadUrl;
-                    item.dataset.img = g.img;
-                    item.dataset.rating = getRandomRating();
-                    item.dataset.size = getRandomSize();
-                    item.dataset.votes = getRandomVotes();
-                    item.dataset.version = g.version || 'v2.0.0';
-                    item.dataset.layout = g.layout || 'left';
-                    item.dataset.bg = g.bg || 'bg-gradient-1';
-                    item.dataset.border = g.border || 'border-style-1';
+                // Get all games except the current one
+                const otherGames = uniqueGames.filter(g => g.name !== game.name);
+                // Optionally limit to first 5 or all, we'll show all for now
+                otherGames.forEach((g, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    // Set data attributes for click handling
+                    card.dataset.name = g.name;
+                    card.dataset.altName = g.altName || g.name;
+                    card.dataset.bonus = g.bonus;
+                    card.dataset.withdrawal = g.withdrawal;
+                    card.dataset.downloadUrl = g.downloadUrl;
+                    card.dataset.img = g.img;
+                    card.dataset.rating = g.rating || getRandomRating();
+                    card.dataset.size = g.size || getRandomSize();
+                    card.dataset.votes = g.votes || getRandomVotes();
+                    card.dataset.version = g.version || 'v2.0.0';
+                    card.dataset.layout = g.layout || 'left';
+                    card.dataset.bg = g.bg || 'bg-gradient-1';
+                    card.dataset.border = g.border || 'border-style-1';
 
-                    item.innerHTML = `
-                            <img src="${g.img}" alt="${g.name}" loading="lazy" onerror="this.src='https://i.ibb.co/LXqV77rd/yono-games.jpg'">
-                            <div class="rinfo">
-                                <div class="rname">${g.name} <span class="alt">| ${g.altName}</span></div>
-                                <div class="rbonus"><span class="icon-svg" style="width:10px;height:10px;"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 8l9-5 9 5"/><path d="M8 12h8"/></svg></span> ${g.bonus}</div>
-                                <div class="rwithdraw"><span class="icon-svg" style="width:10px;height:10px;"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V4a1 1 0 00-1-1H9a1 1 0 00-1 1v3"/><path d="M8 12h8"/></svg></span> ${g.withdrawal}</div>
+                    card.innerHTML = `
+                            <div class="card-number">${idx + 1}</div>
+                            <div class="card-img"><img src="${g.img}" alt="${g.name} | ${g.altName}" loading="lazy" onerror="this.src='https://i.ibb.co/LXqV77rd/yono-games.jpg'"></div>
+                            <div class="card-info">
+                                <div class="card-name">${g.name} <span class="alt">| ${g.altName}</span></div>
+                                <div class="card-bonus"><span class="icon-svg small"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 8l9-5 9 5"/><path d="M8 12h8"/></svg></span> Sign Up Bonus ${g.bonus}</div>
+                                <div class="card-withdraw"><span class="icon-svg small"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V4a1 1 0 00-1-1H9a1 1 0 00-1 1v3"/><path d="M8 12h8"/></svg></span> Min. Withdraw ${g.withdrawal}</div>
                             </div>
-                            <span class="rdownload">
+                            <span class="card-download-sm">
+                                <span class="dl-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><path d="M12 15V3"/></svg></span>
                                 Download
-                                <span class="dl-icon-cyan">
-                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><path d="M12 15V3"/></svg>
-                                </span>
                             </span>
                         `;
-                    relatedGrid.appendChild(item);
+                    relatedGrid.appendChild(card);
 
-                    item.addEventListener('click', function(e) {
-                        e.stopPropagation();
+                    // Add click event to navigate to detail of that game
+                    card.addEventListener('click', function() {
                         const gData = {
                             name: this.dataset.name,
                             altName: this.dataset.altName,
