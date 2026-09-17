@@ -1,0 +1,21 @@
+YONO GAMES Data — Master Admin setup
+
+1. Upload these files to the same GitHub Pages repository root:
+   - index.html
+   - admin.html
+   - apps.json
+   - recovery.json
+   - site-config.json
+
+2. Open admin.html. Passcode: 9127086380
+
+3. Enter GitHub username/organization, repository name, branch and a GitHub Personal Access Token with Contents read/write permission for this repository. Click Save, Verify GitHub, then Load Current Apps.
+
+4. Add/Edit/Remove/Recovery changes are published to apps.json and recovery.json in one Git commit. The public index.html reads apps.json on load, so changes become live after GitHub Pages serves the new commit.
+
+5. Download click tracking:
+   - The index records an anonymous browser ID and app click locally for up to 180 days.
+   - For cross-user live statistics, deploy stats.gs as a Google Apps Script Web App and set SHEET_ID + ADMIN_KEY in Script Properties.
+   - Put the Web App URL in Admin > Tracking endpoint and the same ADMIN_KEY in the private admin-key field. Then use Save & Publish Tracking and Load Live Stats.
+
+6. The GitHub token is intentionally NOT embedded in index.html. It stays in the admin browser's local storage. Never commit a token to a public repository.

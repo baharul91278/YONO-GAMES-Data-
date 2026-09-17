@@ -1,0 +1,14 @@
+{
+  "siteName": "YONO GAMES Data",
+  "appsPath": "apps.json",
+  "recoveryPath": "recovery.json",
+  "trackingEndpoint": "",
+  "firebase": {
+    "enabled": false,
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "databaseURL": "",
+    "appId": ""
+  }
+}
