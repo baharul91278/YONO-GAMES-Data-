@@ -3,12 +3,6 @@
   "appsPath": "apps.json",
   "recoveryPath": "recovery.json",
   "trackingEndpoint": "",
-  "firebase": {
-    "enabled": false,
-    "apiKey": "",
-    "authDomain": "",
-    "projectId": "",
-    "databaseURL": "",
-    "appId": ""
-  }
+  "trackingAdminKey": "",
+  "siteUrl": "https://yonogamesdata.com/"
 }
