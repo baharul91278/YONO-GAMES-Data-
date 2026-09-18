@@ -3,6 +3,5 @@
   "appsPath": "apps.json",
   "recoveryPath": "recovery.json",
   "trackingEndpoint": "",
-  "trackingAdminKey": "",
   "siteUrl": "https://yonogamesdata.com/"
 }
